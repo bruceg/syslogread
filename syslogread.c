@@ -21,7 +21,8 @@ static void handle_msg(char* str, ssize_t len)
        * This is just a quick parse for the non-alpha parts */
     if(*ptr++ == '>' &&
        ptr[3] == ' ' &&
-       isdigit(ptr[4]) && isdigit(ptr[5]) && ptr[6] == ' ' &&
+       (isdigit(ptr[4]) || isspace(ptr[4])) &&
+       isdigit(ptr[5]) && ptr[6] == ' ' &&
        isdigit(ptr[7]) && isdigit(ptr[8]) && ptr[9] == ':' &&
        isdigit(ptr[10]) && isdigit(ptr[11]) && ptr[12] == ':' &&
        isdigit(ptr[13]) && isdigit(ptr[14]) && ptr[15] == ' ') {
