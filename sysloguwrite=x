@@ -1,0 +1,4 @@
+syslogwrite.o
+setuidgid.o
+names.o
+sockaddr_in.o

@@ -1,0 +1,3 @@
+syslogwrite.o
+setuidgid.o
+names.o

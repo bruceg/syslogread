@@ -1,0 +1,3 @@
+syslogread.o
+setuidgid.o
+sockaddr_in.o
