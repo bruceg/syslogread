@@ -1,8 +1,17 @@
-syslogread
+@PACKAGE@
 Syslog message handling tools
 Bruce Guenter <bruceg@em.ca>
 Version @VERSION@
 @TODAY@
+
+A mailing list has been set up to discuss @PACKAGE@ and other packages.
+To subscribe, send an email to:
+	bgware-subscribe@lists.em.ca
+A mailing list archive is available at:
+	http://lists.em.ca/?list=bgware
+
+Development versions of @PACKAGE@ are available via Subversion at:
+	svn://bruce-guenter.dyndns.org/@PACKAGE@/trunk
 
 This package is a set of tools that are useful in receiving, analyzing,
 or producing syslog messages.
