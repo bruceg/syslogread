@@ -17,8 +17,9 @@ opens the named UDP ports for reading.
 Every datagram that is sent to the sockets is written to standard
 output followed by a newline.
 Trailing NUL and newline bytes in the received datagrams are stripped,
-but otherwise no data manipulation is done.
-An HOST of
+as are date stamp prefixes if they are detected.
+No other data manipulation is done.
+A HOST of
 .I 0
 means to bind to all interfaces.
 .SH OPTIONS

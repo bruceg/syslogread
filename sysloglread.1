@@ -19,7 +19,8 @@ creates the named sockets and opens them for reading.
 Every datagram that is sent to the sockets is written to standard
 output followed by a newline.
 Trailing NUL and newline bytes in the received datagrams are stripped,
-but otherwise no data manipulation is done.
+as are date stamp prefixes if they are detected.
+No other data manipulation is done.
 .SH OPTIONS
 .TP
 .B \-g GID
