@@ -22,7 +22,8 @@ make CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="-s"
 
 %install
 rm -fr $RPM_BUILD_ROOT
-make DESTDIR=$RPM_BUILD_ROOT bindir=%{_bindir} mandir=%{_mandir} install
+make DESTDIR=$RPM_BUILD_ROOT bindir=%{_bindir} mandir=%{_mandir} \
+	install install-services
 
 %clean
 rm -rf $RPM_BUILD_ROOT

@@ -6,13 +6,14 @@ PKGURL=http://em.ca/~bruceg/syslogread/
 # If LISTSUB is set, makedist will add a note regarding mailing list
 # subscription.
 LISTSUB=bgware-subscribe@lists.em.ca
+LISTURL=http://lists.em.ca/ezmlm.cgi?3
 
 # Set MAKERPM to non-empty if the tarball is to be built into a RPM.
 MAKERPM=true
 
 # Set NOARCH to non-empty if there are no architecture dependant files
 # in the executable package
-NOARCH=
+NOARCH=false
 
 # Set DOCS to the list of files that should go into the "docs" directory
 # in the destination site.

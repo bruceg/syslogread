@@ -2,7 +2,7 @@ syslogread
 Syslog message handling tools
 Bruce Guenter <bruceg@em.ca>
 Version 0.90
-2000-07-28
+2001-01-22
 
 This package is a set of tools that are useful in receiving, analyzing,
 or producing syslog messages.

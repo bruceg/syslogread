@@ -57,11 +57,13 @@ install: all
 	$(INSTALL) -d $(DESTDIR)$(mandir)/man1
 	$(INSTALL) -m 644 $(MAN1S) $(DESTDIR)$(mandir)/man1
 
+install-services:
 	@set -ex; for service in $(SERVICES); do \
-	  $(INSTALL) -d $(DESTDIR)/$(svcdir)/$$service; \
+	  $(INSTALL) -d $(DESTDIR)/$(svcdir)/$$service/log; \
 	  $(INSTALL) -m 755 $$service.run $(DESTDIR)/$(svcdir)/$$service/run; \
 	  $(INSTALL) -m 755 $$service-log.run $(DESTDIR)/$(svcdir)/$$service/log/run; \
 	done
+	$(INSTALL) -d $(DESTDIR)/var/log/syslog
 
 clean:
 	$(RM) core $(PROGRAMS) *.o
