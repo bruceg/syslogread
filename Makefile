@@ -14,7 +14,7 @@ prefix = /usr
 
 PROGRAMS = sysloglread sysloglwrite sysloguread sysloguwrite syslogxlate
 SCRIPTS = syslogconf2svc
-MAN1S = sysloglread.1 sysloguread.1 syslogxlate.1
+MAN1S = sysloglread.1 sysloglwrite.1 sysloguread.1 sysloguwrite.1 syslogxlate.1
 
 all: $(PROGRAMS)
 
