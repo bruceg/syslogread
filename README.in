@@ -1,8 +1,8 @@
 syslogread
 Syslog message handling tools
 Bruce Guenter <bruceg@em.ca>
-Version 0.90
-2001-01-22
+Version @VERSION@
+@TODAY@
 
 This package is a set of tools that are useful in receiving, analyzing,
 or producing syslog messages.
@@ -21,7 +21,7 @@ syslogxlate reads messages written by sysloglread or sysloguread,
 converts the identification code number to symbolic names, and writes
 out selected messages to standard output.
 
-This package is Copyright(C) 2000 Bruce Guenter, and may be copied
+This package is Copyright(C) 2000,2003 Bruce Guenter, and may be copied
 according to the GNU GENERAL PUBLIC LICENSE (GPL) Version 2 or a later
 version.  A copy of this license is included with this package.  This
 package comes with no warranty of any kind.
