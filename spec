@@ -1,7 +1,7 @@
 Name: @PACKAGE@
 Summary: Syslog message handling tools
 Version: @VERSION@
-Release: 1
+Release: 2
 Copyright: GPL
 Group: Utilities/System
 Source: @PACKAGE@-@VERSION@.tar.gz
@@ -9,6 +9,7 @@ BuildRoot: /tmp/@PACKAGE@-root
 Packager: Bruce Guenter <bruceg@em.ca>
 Conflicts: sysklogd
 Requires: supervise-scripts >= 3.2
+Provides: sysklogd-1.3.31
 
 %description
 This package is a set of tools that are useful in receiving, analyzing,
