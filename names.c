@@ -1,3 +1,4 @@
+#include <string.h>
 #include "names.h"
 
 static const char* tmp_priority_names[] = {
@@ -11,6 +12,16 @@ static const char* tmp_priority_names[] = {
   "debug"
 };
 const char** priority_names = tmp_priority_names;
+
+int priority_number(const char* name)
+{
+  int i;
+  for(i = 0; i < priority_count; i++) {
+    if(!strcasecmp(name, priority_names[i]))
+      return i;
+  }
+  return -1;
+}
 
 static const char* tmp_facility_names[] = {
   "kern",
@@ -39,3 +50,13 @@ static const char* tmp_facility_names[] = {
   "local7"
 };
 const char** facility_names = tmp_facility_names;
+
+int facility_number(const char* name)
+{
+  int i;
+  for(i = 0; i < facility_count; i++) {
+    if(!strcasecmp(name, facility_names[i]))
+      return i;
+  }
+  return -1;
+}

@@ -1,15 +1,16 @@
 #include <errno.h>
+#include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <sys/un.h>
 #include <unistd.h>
 #include "names.h"
-#include "syslogwrite.h"
 #include "setuidgid.h"
+#include "sockaddr_in.h"
+#include "syslogwrite.h"
 
 void write_err(const char* str)
 {
@@ -18,7 +19,7 @@ void write_err(const char* str)
 
 void error(const char* msg)
 {
-  write_err("sysloglwrite: Error: ");
+  write_err("sysloguwrite: Error: ");
   write_err(msg);
   write_err("\n");
 }
@@ -33,11 +34,11 @@ void usage(const char* msg)
 {
   if(msg)
     error(msg);
-  write_err("Usage: sysloglwrite [-g GID] [-u UID] [-U] [-R] PATH FACILITY [PREFIX]\n");
+  write_err("Usage: sysloguwrite [-g GID] [-u UID] [-U] HOST PORT FACILITY [PREFIX]\n");
   exit(1);
 }
 
-static const char* socket_name;
+static int sockfd;
 static int facility;
 static const char* prefix = "";
 
@@ -48,6 +49,7 @@ static int opt_strip_priority = 0;
 
 void parse_args(int argc, char* argv[])
 {
+  struct sockaddr_in sa;
   int ch;
   while((ch = getopt(argc, argv, "g:Ru:U")) != EOF) {
     switch(ch) {
@@ -62,11 +64,15 @@ void parse_args(int argc, char* argv[])
       usage(0);
     }
   }
-  if(argc - optind < 2)
-    usage("Missing PATH or FACILITY argument");
-  if(argc - optind > 3)
+  if(argc - optind < 3)
+    usage("Missing HOST, PORT, or FACILITY argument");
+  if(argc - optind > 4)
     usage("Too many command-line arguments");
-  socket_name = argv[optind++];
+  if((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) == -1)
+    die("Could not create socket");
+  make_sockaddr_in(argv[optind++], argv[optind++], &sa);
+  if(connect(sockfd, &sa, sizeof sa))
+    die("Could not connect to server");
   facility = facility_number(argv[optind]);
   if(facility < 0)
     usage("Invalid facility name");
@@ -74,35 +80,15 @@ void parse_args(int argc, char* argv[])
     prefix = argv[optind++];
 }
 
-int make_socket(const char* path)
-{
-  struct sockaddr_un sa;
-  int fd = socket(AF_UNIX, SOCK_DGRAM, 0);
-  if(fd == -1)
-    die("Could not create socket");
-  sa.sun_family = AF_UNIX;
-  strcpy(sa.sun_path, path);
-  if(connect(fd, (struct sockaddr*)&sa, sizeof sa))
-    die("Could not connect to path");
-  if(!opt_reopen)
-    setuidgid(opt_uid, opt_gid);
-  return fd;
-}
-
 void write_message(int fd, const char* message, size_t msg_len)
 {
-  if(opt_reopen)
-    fd = make_socket(socket_name);
   write(fd, message, msg_len);
-  if(opt_reopen)
-    close(fd);
 }
 
 int main(int argc, char* argv[])
 {
   parse_args(argc, argv);
-  main_loop(opt_reopen ? 0 : make_socket(socket_name),
-	    prefix, facility, opt_strip_priority);
+  main_loop(sockfd, prefix, facility, opt_strip_priority);
   return 0;
 }
 

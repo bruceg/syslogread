@@ -51,15 +51,11 @@ void parse_facility(const char* str, unsigned* facility, unsigned* all_fac)
   if(str[0] == '*' && !str[1])
     *all_fac = 1;
   else {
-    unsigned i;
+    int i = facility_number(str);
+    if(i < 0)
+      usage("Unknown facility name");
+    *facility = i;
     *all_fac = 0;
-    for(i = 0; i < facility_count; i++) {
-      if(!strcasecmp(str, facility_names[i])) {
-	*facility = i;
-	return;
-      }
-    }
-    usage("Unknown facility name");
   }
 }
 
@@ -79,14 +75,10 @@ void parse_priority(const char* str, unsigned* priority,
   if(str[0] == '*' && !str[1])
     *priority = priority_count-1;
   else {
-    unsigned i;
-    for(i = 0; i < priority_count; i++) {
-      if(!strcasecmp(str, priority_names[i])) {
-	*priority = i;
-	return;
-      }
-    }
-    usage("Unknown priority name");
+    int i = priority_number(str);
+    if(i < 0)
+      usage("Unknown priority name");
+    *priority = i;
   }
 }
 
