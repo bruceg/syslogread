@@ -50,7 +50,7 @@ void usage(const char* msg)
 {
   if(msg)
     error(msg);
-  write_err("Usage: sysloguwrite [-g GID] [-u UID] [-U] [-P] HOST PORT FACILITY [PREFIX]\n");
+  write_err("Usage: sysloguwrite [-g GID] [-u UID] [-U] [-p] HOST PORT FACILITY [PREFIX]\n");
   exit(1);
 }
 
@@ -65,8 +65,10 @@ static int opt_strip_priority = 0;
 void parse_args(int argc, char* argv[])
 {
   struct sockaddr_in sa;
+  const char* host;
+  const char* port;
   int ch;
-  while((ch = getopt(argc, argv, "g:Ru:U")) != EOF) {
+  while((ch = getopt(argc, argv, "g:u:Up")) != EOF) {
     switch(ch) {
     case 'g': opt_gid = parse_gid(optarg); break;
     case 'p': opt_strip_priority = 1;      break;
@@ -85,10 +87,12 @@ void parse_args(int argc, char* argv[])
     usage("Too many command-line arguments");
   if((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) == -1)
     die("Could not create socket");
-  make_sockaddr_in(argv[optind++], argv[optind++], &sa);
+  host = argv[optind++];
+  port = argv[optind++];
+  make_sockaddr_in(host, port, &sa);
   if(connect(sockfd, &sa, sizeof sa))
     die("Could not connect to server");
-  facility = facility_number(argv[optind]);
+  facility = facility_number(argv[optind++]);
   if(facility < 0)
     usage("Invalid facility name");
   if(argc - optind >= 1)

@@ -4,4 +4,7 @@ Changes in version 0.91:
 - Fixed up the sysloglwrite and sysloguwrite man pages.
 
 - Added some more compile fixes.
+
+- Fixed up some logic glitches with sysloguwrite.c
+  (patch originally from Chris Jantzen <chris@maybe.net>).
 -------------------------------------------------------------------------------
