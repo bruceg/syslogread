@@ -41,5 +41,5 @@ WEBDIR=www/syslogread
 RPMUPLOAD=incoming.redhat.com/libc6
 
 # Set LIST to the mailing list(s) to send the announcement to
-LIST="bgware@lists.em.ca log@cr.yp.to"
+LIST="bgware@lists.em.ca" # log@cr.yp.to
 
