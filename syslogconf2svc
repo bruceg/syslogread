@@ -16,7 +16,7 @@ sub cmd {
 sub make_run {
     my $dirname = shift;
     print "# Making run file in $dirname.\n";
-    cmd("mkdir", $dirname);
+    cmd("mkdir -p", $dirname);
     cmd("echo '#!/bin/sh' >$dirname/run");
     foreach $line (@_) {
 	cmd("echo $line >>$dirname/run");
@@ -26,6 +26,7 @@ sub make_run {
 
 $count = 0;
 make_run($svcdir, 'exec sysloglread /dev/log');
+cmd("chmod +t $dirname");
 make_run("$svcdir/log", 'exec multipipe');
 while(<IN>) {
     # Strip whitespace and merge multiple into one space
@@ -42,8 +43,8 @@ while(<IN>) {
     # Ignore the line if the destination is '*' or /dev/anything
     next if $dest eq '*';
     next if $dest =~ m|^/dev/|o;
-    cmd("mv $dest $dest.0");
-    cmd("mkdir $dest");
+    #cmd("mv $dest $dest.0");
+    #cmd("mkdir $dest");
     make_run("$svcdir/log/part$count", 'exec spipe filter logger');
     make_run("$svcdir/log/part$count/filter",
 	     "exec syslogxlate '" . join(' ', @selectors) . "'");
