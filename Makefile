@@ -10,6 +10,7 @@ LDFLAGS = -g
 RM = rm -f
 
 INSTALL = install
+prefix = /usr
 
 PROGRAMS = sysloglread sysloglwrite sysloguread sysloguwrite syslogxlate
 SCRIPTS = syslogconf2svc
@@ -46,11 +47,11 @@ sysloguwrite.o: sysloguwrite.c syslogwrite.h setuidgid.h names.h sockaddr_in.h
 syslogxlate.o: syslogxlate.c names.h
 
 install: all
-	$(INSTALL) -d $(DESTDIR)/usr/bin
-	$(INSTALL) $(PROGRAMS) $(SCRIPTS) $(DESTDIR)/usr/bin
+	$(INSTALL) -d $(DESTDIR)$(prefix)/bin
+	$(INSTALL) $(PROGRAMS) $(SCRIPTS) $(DESTDIR)$(prefix)/bin
 
-	$(INSTALL) -d $(DESTDIR)/usr/man/man1
-	$(INSTALL) -m 644 $(MAN1S) $(DESTDIR)/usr/man/man1
+	$(INSTALL) -d $(DESTDIR)$(prefix)/man/man1
+	$(INSTALL) -m 644 $(MAN1S) $(DESTDIR)$(prefix)/man/man1
 
 clean:
 	$(RM) core multilog qfilelog spipe *.o
