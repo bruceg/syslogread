@@ -26,7 +26,7 @@ sub make_run {
 
 $count = 0;
 make_run($svcdir, 'exec sysloglread /dev/log');
-cmd("chmod +t $dirname");
+cmd("chmod +t $svcdir");
 make_run("$svcdir/log", 'exec multipipe');
 while(<IN>) {
     # Strip whitespace and merge multiple into one space

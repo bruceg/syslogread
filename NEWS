@@ -7,4 +7,6 @@ Changes in version 0.91:
 
 - Fixed up some logic glitches with sysloguwrite.c
   (patch originally from Chris Jantzen <chris@maybe.net>).
+
+- Fixed up typo in syslogconf2svc script.
 -------------------------------------------------------------------------------
