@@ -5,7 +5,7 @@ Release: 2
 Copyright: GPL
 Group: Utilities/System
 Source: @PACKAGE@-@VERSION@.tar.gz
-BuildRoot: /tmp/@PACKAGE@-root
+BuildRoot: %{_tmppath}/@PACKAGE@-root
 Packager: Bruce Guenter <bruceg@em.ca>
 Conflicts: sysklogd
 Requires: supervise-scripts >= 3.2
@@ -43,7 +43,7 @@ install -m 755 sysloglread-log.run $RPM_BUILD_ROOT/var/service/sysloglread/log/r
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-PATH="/sbin:/usr/sbin:$PATH" export PATH
+PATH="%{_sbindir}:$PATH" export PATH
 add_user() { grep "^$1:" /etc/passwd >/dev/null || useradd -d "$3" -g "$2" -M -r -s /bin/true "$1"; }
 add_group() { grep "^$1:" /etc/group >/dev/null || groupadd -r "$1"; }
 
@@ -65,7 +65,7 @@ case "$1" in
 esac
 
 %postun
-PATH="/sbin:/usr/sbin:$PATH" export PATH
+PATH="/sbin:%{_sbindir}:$PATH" export PATH
 case "$1" in
 0)
 	# post-erase instructions
