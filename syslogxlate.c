@@ -7,12 +7,11 @@
 static int selected[facility_count][priority_count] = {{0,}};
 
 const char* usage_str =
-"Usage: syslogxlate [-FPtx] PRIORITY.FACILITY [PRIORITY.FACILITY...]
+"Usage: syslogxlate [-FPx] PRIORITY.FACILITY [PRIORITY.FACILITY...]
   Selects and translates syslog formatted messages.
 
   -F  Show the facility name or number
   -P  Show the priority name or number
-  -t  Do not strip timestamps
   -x  Do not translate priority or facility numbers into names
 
   PRIORITY is one of emerg, alert, crit, err, warning, notice, info, or debug.
@@ -24,7 +23,6 @@ const char* usage_str =
 static int opt_show_facility = 0;
 static int opt_show_priority = 0;
 static int opt_xlate_names = 1;
-static int opt_strip_timestamp = 1;
 
 void usage(const char* msg)
 {
@@ -114,7 +112,6 @@ void parse_args(int argc, char* argv[])
     switch(ch) {
     case 'F': opt_show_facility = 1;   break;
     case 'P': opt_show_priority = 1;   break;
-    case 't': opt_strip_timestamp = 0; break;
     case 'x': opt_xlate_names = 0;     break;
     default:
       usage(0);
@@ -124,19 +121,6 @@ void parse_args(int argc, char* argv[])
     usage("You need to select at least one PRIORITY.FACILITY");
   for(; optind < argc; optind++)
     parse_selector(argv[optind]);
-}
-
-const char* strip_timestamp(const char* line)
-{
-  /* syslog date stamps are of the form:
-   * "MMM DD HH:MM:SS "
-   * This is just a quick parse for the non-alphanumeric parts */
-  if(strlen(line) <= 17)
-    return 0;
-  if(line[3] != ' ' || line[6] != ' ' ||
-     line[9] != ':' || line[12] != ':' || line[15] != ' ')
-    return 0;
-  return line + 16;
 }
 
 const char* parse_syslog(const char* line,
@@ -150,8 +134,6 @@ const char* parse_syslog(const char* line,
     return 0;
   *facility = num >> 3;
   *priority = num & 7;
-  if(opt_strip_timestamp)
-    line = strip_timestamp(line);
   return line;
 }
 
