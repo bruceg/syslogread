@@ -1,6 +1,6 @@
 .TH sysloguread.1
 .SH NAME
-sysloguread \- Read messages from a local domain datagram socket
+sysloguread \- Read messages from a UDP socket
 .SH SYNOPSIS
 .B sysloguread
 [
@@ -10,7 +10,7 @@ sysloguread \- Read messages from a local domain datagram socket
 ] [
 .B \-U
 ]
-.I IP PORT ...
+.I HOST PORT ...
 .SH DESCRIPTION
 .B sysloguread
 opens the named UDP ports for reading.
@@ -18,7 +18,7 @@ Every datagram that is sent to the sockets is written to standard
 output followed by a newline.
 Trailing NUL and newline bytes in the received datagrams are stripped,
 but otherwise no data manipulation is done.
-An IP of
+An HOST of
 .I 0
 means to bind to all interfaces.
 .SH OPTIONS
@@ -40,9 +40,10 @@ To run this program to securely read syslog messages from
 the syslog UDP service (port #514) on all interfaces, use:
 
 .EX
-envuidgid nobody syslogread -U 0 514
+envuidgid nobody sysloguread -U 0 514
 .EE
 .SH SEE ALSO
 envuidgid,
 sysloglread(1),
+sysloguwrite(1),
 syslogxlate(1)

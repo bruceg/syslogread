@@ -34,7 +34,7 @@ void usage(const char* msg)
 {
   if(msg)
     error(msg);
-  write_err("Usage: sysloguwrite [-g GID] [-u UID] [-U] HOST PORT FACILITY [PREFIX]\n");
+  write_err("Usage: sysloguwrite [-g GID] [-u UID] [-U] [-P] HOST PORT FACILITY [PREFIX]\n");
   exit(1);
 }
 
@@ -44,7 +44,6 @@ static const char* prefix = "";
 
 static gid_t opt_gid = 0;
 static uid_t opt_uid = 0;
-static int opt_reopen = 0;
 static int opt_strip_priority = 0;
 
 void parse_args(int argc, char* argv[])
@@ -54,7 +53,7 @@ void parse_args(int argc, char* argv[])
   while((ch = getopt(argc, argv, "g:Ru:U")) != EOF) {
     switch(ch) {
     case 'g': opt_gid = parse_gid(optarg); break;
-    case 'R': opt_reopen = 1;              break;
+    case 'p': opt_strip_priority = 1;      break;
     case 'u': opt_uid = parse_uid(optarg); break;
     case 'U':
       opt_gid = parse_gid(getenv("GID"));
@@ -82,7 +81,8 @@ void parse_args(int argc, char* argv[])
 
 void write_message(int fd, const char* message, size_t msg_len)
 {
-  write(fd, message, msg_len);
+  if(send(fd, message, msg_len, 0) == -1)
+    error("Could not send message to server");
 }
 
 int main(int argc, char* argv[])

@@ -33,7 +33,7 @@ void usage(const char* msg)
 {
   if(msg)
     error(msg);
-  write_err("Usage: sysloglwrite [-g GID] [-u UID] [-U] [-R] PATH FACILITY [PREFIX]\n");
+  write_err("Usage: sysloglwrite [-g GID] [-u UID] [-U] [-p] [-r] PATH FACILITY [PREFIX]\n");
   exit(1);
 }
 
@@ -49,10 +49,11 @@ static int opt_strip_priority = 0;
 void parse_args(int argc, char* argv[])
 {
   int ch;
-  while((ch = getopt(argc, argv, "g:Ru:U")) != EOF) {
+  while((ch = getopt(argc, argv, "g:pru:U")) != EOF) {
     switch(ch) {
     case 'g': opt_gid = parse_gid(optarg); break;
-    case 'R': opt_reopen = 1;              break;
+    case 'p': opt_strip_priority = 1;      break;
+    case 'r': opt_reopen = 1;              break;
     case 'u': opt_uid = parse_uid(optarg); break;
     case 'U':
       opt_gid = parse_gid(getenv("GID"));
@@ -93,7 +94,8 @@ void write_message(int fd, const char* message, size_t msg_len)
 {
   if(opt_reopen)
     fd = make_socket(socket_name);
-  write(fd, message, msg_len);
+  if(send(fd, message, msg_len, 0) == -1)
+    error("Could not send message to server");
   if(opt_reopen)
     close(fd);
 }

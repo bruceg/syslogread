@@ -1,0 +1,64 @@
+.TH sysloguwrite.1
+.SH NAME
+sysloguwrite \- Write syslog messages to a UDP socket
+.SH SYNOPSIS
+.B sysloguwrite
+[
+.B \-g GID
+] [
+.B \-u UID
+] [
+.B \-U
+] [
+.B \-p
+] [
+.B \-X
+]
+.I HOST PORT FACILITY
+[
+.I PREFIX
+]
+.SH DESCRIPTION
+.B sysloguwrite
+reads lines from standard input and sends them to the named UDP port.
+Each output message is optionally prefixed with
+.IR PREFIX .
+.P
+Messages that start with one of the following prefixes have their
+syslog priorities set to the indicated value:
+.RS
+.nf
+.ta 5c 10c
+\fBemergency:	\fREMERG
+\fBalert:	\fRALERT
+\fBcritical:	\fRCRIT
+\fBerror:	\fRERR
+\fBwarning:	\fRWARNING
+\fBnotice:	\fRNOTICE
+\fBinfo:	\fRINFO
+\fBdebug:	\fRDEBUG
+.fi
+.RE
+Messages are sent with the INFO priority by default.
+.SH OPTIONS
+.TP
+.B \-g GID
+Switch group ID to GID after preparing to receive connections.
+GID must be a positive integer.
+.TP
+.B \-u UID
+Switch user ID to UID after preparing to receive connections.
+UID must be a positive integer.
+.TP
+.B \-p
+Strip off the priority prefix from the above table.
+.TP
+.B \-U
+Same as -g $GID -u $UID.
+Typically $GID and $UID are set by
+.BR envuidgid .
+.SH SEE ALSO
+envuidgid,
+sysloglwrite(1),
+sysloguread(1),
+syslogxlate(1)

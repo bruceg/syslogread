@@ -14,7 +14,11 @@ void main_loop(int fd, const char* prefix,
   while(fgets(inbuf, sizeof inbuf, stdin)) {
     unsigned priority = LOG_INFO;
     const char* msgptr = inbuf;
-    if(!strncasecmp(inbuf, "alert:", 6)) {
+    if(!strncasecmp(inbuf, "emergency:", 10)) {
+      priority = LOG_ALERT;
+      msgptr = inbuf + 10;
+    }
+    else if(!strncasecmp(inbuf, "alert:", 6)) {
       priority = LOG_ALERT;
       msgptr = inbuf + 6;
     }
