@@ -5,11 +5,12 @@ Release: 2
 Copyright: GPL
 Group: Utilities/System
 Source: @PACKAGE@-@VERSION@.tar.gz
-BuildRoot: %{_tmppath}/@PACKAGE@-root
 Packager: Bruce Guenter <bruceg@em.ca>
 Conflicts: sysklogd
 Requires: supervise-scripts >= 3.2
 Provides: sysklogd-1.3.31
+BuildRoot: %{_tmppath}/@PACKAGE@-root
+BuildRequires: bglibs >= 1.007
 
 %description
 This package is a set of tools that are useful in receiving, analyzing,
