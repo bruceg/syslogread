@@ -9,6 +9,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include "syslogread.h"
+#include "setuidgid.h"
 
 void write_err(const char* str)
 {

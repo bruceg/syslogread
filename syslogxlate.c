@@ -2,48 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "names.h"
 
-const char* priority_names[] = {
-  "emerg",
-  "alert",
-  "crit",
-  "err",
-  "warning",
-  "notice",
-  "info",
-  "debug"
-};
-#define priority_count (sizeof priority_names / sizeof(char*))
-
-const char* facility_names[] = {
-  "kern",
-  "user",
-  "mail",
-  "daemon",
-  "auth",
-  "syslog",
-  "lpr",
-  "news",
-  "uucp",
-  "cron",
-  "authpriv",
-  "ftp",
-  "RESERVED",
-  "RESERVED",
-  "RESERVED",
-  "RESERVED",
-  "local0",
-  "local1",
-  "local2",
-  "local3",
-  "local4",
-  "local5",
-  "local6",
-  "local7"
-};
-#define facility_count (sizeof facility_names / sizeof(char*))
-
-int selected[facility_count][priority_count] = {{0,}};
+static int selected[facility_count][priority_count] = {{0,}};
 
 const char* usage_str =
 "Usage: syslogxlate [-FPtx] PRIORITY.FACILITY [PRIORITY.FACILITY...]

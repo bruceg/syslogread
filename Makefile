@@ -11,25 +11,36 @@ RM = rm -f
 
 INSTALL = install
 
-PROGRAMS = sysloglread sysloguread syslogxlate
+PROGRAMS = sysloglread sysloglwrite sysloguread syslogxlate
 SCRIPTS = syslogconf2svc
 MAN1S = sysloglread.1 sysloguread.1 syslogxlate.1
 
 all: $(PROGRAMS)
 
-sysloglread: sysloglread.o syslogread.o
-	$(LD) $(LDFLAGS) -o $@ sysloglread.o syslogread.o $(LIBS)
+sysloglread: sysloglread.o syslogread.o setuidgid.o
+	$(LD) $(LDFLAGS) -o $@ sysloglread.o syslogread.o setuidgid.o $(LIBS)
 
-sysloguread: sysloguread.o syslogread.o
-	$(LD) $(LDFLAGS) -o $@ sysloguread.o syslogread.o $(LIBS)
+sysloglwrite: sysloglwrite.o syslogwrite.o setuidgid.o
+	$(LD) $(LDFLAGS) -o $@ sysloglwrite.o syslogwrite.o setuidgid.o $(LIBS)
 
-syslogxlate: syslogxlate.o
-	$(LD) $(LDFLAGS) -o $@ $< $(LIBS)
+sysloguread: sysloguread.o syslogread.o setuidgid.o
+	$(LD) $(LDFLAGS) -o $@ sysloguread.o syslogread.o setuidgid.o $(LIBS)
 
-sysloglread.o: sysloglread.c syslogread.h
-sysloguread.o: sysloguread.c syslogread.h
-syslogxlate.o: syslogxlate.c
+sysloguwrite: sysloguwrite.o syslogwrite.o setuidgid.o
+	$(LD) $(LDFLAGS) -o $@ sysloguwrite.o syslogwrite.o setuidgid.o $(LIBS)
+
+syslogxlate: syslogxlate.o names.o
+	$(LD) $(LDFLAGS) -o $@ syslogxlate.o names.o $(LIBS)
+
+names.o: names.c names.h
+setuidgid.o: setuidgid.c setuidgid.h
 syslogread.o: syslogread.c syslogread.h
+syslogwrite.o: syslogwrite.c syslogwrite.h
+sysloglread.o: sysloglread.c syslogread.h setuidgid.h
+sysloglwrite.o: sysloglwrite.c syslogwrite.h setuidgid.h
+sysloguread.o: sysloguread.c syslogread.h setuidgid.h
+sysloguwrite.o: sysloguwrite.c syslogwrite.h setuidgid.h
+syslogxlate.o: syslogxlate.c names.h
 
 install: all
 	$(INSTALL) -d $(DESTDIR)/usr/bin
