@@ -1,0 +1,9 @@
+- Make syslogxlate work better with multilog.
+
+- Consider adding the xlate code into syslog[lu]read.
+
+- Use the "socket" library.
+
+- Test the new spec.
+
+- Release package.
