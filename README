@@ -7,6 +7,20 @@ Version 0.90
 This package is a set of tools that are useful in receiving, analyzing,
 or producing syslog messages.
 
+sysloglread reads syslog messages from a local-domain datagram socket,
+and writes them to standard output.
+
+sysloglwrite writes syslog messages to a local-domain datagram socket.
+
+sysloguread reads syslog messages via UDP, and writes them to standard
+output.
+
+sysloguwrite writes syslog messages via UDP.
+
+syslogxlate reads messages written by sysloglread or sysloguread,
+converts the identification code number to symbolic names, and writes
+out selected messages to standard output.
+
 This package is Copyright(C) 2000 Bruce Guenter, and may be copied
 according to the GNU GENERAL PUBLIC LICENSE (GPL) Version 2 or a later
 version.  A copy of this license is included with this package.  This
