@@ -11,10 +11,14 @@ RM = rm -f
 
 INSTALL = install
 prefix = /usr
+bindir = $(prefix)/bin
+mandir = $(prefix)/man
+svcdir = /var/service
 
 PROGRAMS = sysloglread sysloglwrite sysloguread sysloguwrite syslogxlate
 SCRIPTS = syslogconf2svc
 MAN1S = sysloglread.1 sysloglwrite.1 sysloguread.1 sysloguwrite.1 syslogxlate.1
+SERVICES = sysloglread
 
 all: $(PROGRAMS)
 
@@ -47,11 +51,17 @@ sysloguwrite.o: sysloguwrite.c syslogwrite.h setuidgid.h names.h sockaddr_in.h
 syslogxlate.o: syslogxlate.c names.h
 
 install: all
-	$(INSTALL) -d $(DESTDIR)$(prefix)/bin
-	$(INSTALL) $(PROGRAMS) $(SCRIPTS) $(DESTDIR)$(prefix)/bin
+	$(INSTALL) -d $(DESTDIR)$(bindir)
+	$(INSTALL) $(PROGRAMS) $(DESTDIR)$(bindir)
 
-	$(INSTALL) -d $(DESTDIR)$(prefix)/man/man1
-	$(INSTALL) -m 644 $(MAN1S) $(DESTDIR)$(prefix)/man/man1
+	$(INSTALL) -d $(DESTDIR)$(mandir)/man1
+	$(INSTALL) -m 644 $(MAN1S) $(DESTDIR)$(mandir)/man1
+
+	@set -ex; for service in $(SERVICES); do \
+	  $(INSTALL) -d $(DESTDIR)/$(svcdir)/$$service; \
+	  $(INSTALL) -m 755 $$service.run $(DESTDIR)/$(svcdir)/$$service/run; \
+	  $(INSTALL) -m 755 $$service-log.run $(DESTDIR)/$(svcdir)/$$service/log/run; \
+	done
 
 clean:
-	$(RM) core multilog qfilelog spipe *.o
+	$(RM) core $(PROGRAMS) *.o

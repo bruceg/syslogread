@@ -1,0 +1,2 @@
+#!/bin/sh
+exec setuidgid syslogrd multilog t /var/log/syslog
