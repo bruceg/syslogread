@@ -39,6 +39,7 @@ make installer instcheck
 ./instcheck
 install -m 755 sysloglread.run $RPM_BUILD_ROOT/var/service/sysloglread/run
 install -m 755 sysloglread-log.run $RPM_BUILD_ROOT/var/service/sysloglread/log/run
+mkdir -p $RPM_BUILD_ROOT/var/log/syslog
 
 %clean
 rm -rf $RPM_BUILD_ROOT
