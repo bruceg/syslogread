@@ -1,8 +1,8 @@
-.TH sysloguwrite.1
+.TH sysloglwrite.1
 .SH NAME
-sysloguwrite \- Write syslog messages to a UDP socket
+sysloglwrite \- Write syslog messages to a local domain socket
 .SH SYNOPSIS
-.B sysloguwrite
+.B sysloglwrite
 [
 .B \-g GID
 ] [
@@ -12,15 +12,16 @@ sysloguwrite \- Write syslog messages to a UDP socket
 ] [
 .B \-p
 ] [
-.B \-X
+.B \-r
 ]
-.I HOST PORT FACILITY
+.I PATH FACILITY
 [
 .I PREFIX
 ]
 .SH DESCRIPTION
-.B sysloguwrite
-reads lines from standard input and sends them to the named UDP port.
+.B sysloglwrite
+reads lines from standard input and sends them to the named local
+domain socket.
 Each output message is optionally prefixed with
 .IR PREFIX .
 .P
@@ -53,12 +54,15 @@ UID must be a positive integer.
 .B \-p
 Strip off the priority prefix from the above table.
 .TP
+.B \-r
+Reopen the socket file before sending each message.
+.TP
 .B \-U
 Same as -g $GID -u $UID.
 Typically $GID and $UID are set by
 .BR envuidgid .
 .SH SEE ALSO
 envuidgid,
-sysloglwrite(1),
-sysloguread(1),
+sysloguwrite(1),
+sysloglread(1),
 syslogxlate(1)
