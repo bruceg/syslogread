@@ -1,0 +1,53 @@
+.TH sysloglread.1
+.SH NAME
+sysloglread \- Read messages from a local domain datagram socket
+.SH SYNOPSIS
+.B sysloglread
+[
+.B \-g GID
+] [
+.B \-u UID
+] [
+.B \-U
+] [
+.B \-m MASK
+]
+.I socket ...
+.SH DESCRIPTION
+.B sysloglread
+creates the named sockets and opens them for reading.
+Every datagram that is sent to the sockets is written to standard
+output followed by a newline.
+Trailing NUL and newline bytes in the received datagrams are stripped,
+but otherwise no data manipulation is done.
+.SH OPTIONS
+.TP
+.B \-g GID
+Switch group ID to GID after preparing to receive connections.
+GID must be a positive integer.
+.TP
+.B \-u UID
+Switch user ID to UID after preparing to receive connections.
+UID must be a positive integer.
+.TP
+.B \-U
+Same as -g $GID -u $UID.
+Typically $GID and $UID are set by
+.BR envuidgid .
+.TP
+.B \-m MASK
+Change the value of umask to MASK (in octal) before creating the
+sockets.
+Defaults to 0111.
+.SH EXAMPLES
+To run this program to securely read syslog messages from
+.IR /dev/log ,
+use:
+
+.EX
+envuidgid nobody sysloglread -U /dev/log
+.EE
+.SH SEE ALSO
+envuidgid,
+sysloguread(1),
+syslogxlate(1)

@@ -1,0 +1,52 @@
+#!/usr/bin/perl
+($in,$svcdir) = @ARGV;
+if(!$in || !$svcdir || !open(IN, $in)) {
+    print "Usage: syslogconf2svc CONFFILE SERVICEDIR\n";
+    print "  CONFFILE is the input configuration file.\n";
+    print "  SERVICEDIR is the directory to which the resulting\n";
+    print "  service will be set up.\n";
+    exit(1);
+}
+
+sub cmd {
+    my $cmd = join(' ', @_);
+    print $cmd, "\n";
+}
+
+sub make_run {
+    my $dirname = shift;
+    print "# Making run file in $dirname.\n";
+    cmd("mkdir", $dirname);
+    cmd("echo '#!/bin/sh' >$dirname/run");
+    foreach $line (@_) {
+	cmd("echo $line >>$dirname/run");
+    }
+    cmd("chmod +x $dirname/run");
+}
+
+$count = 0;
+make_run($svcdir, 'exec sysloglread /dev/log');
+make_run("$svcdir/log", 'exec multipipe');
+while(<IN>) {
+    # Strip whitespace and merge multiple into one space
+    s/^\s+//o;
+    s/\s+$//o;
+    s/\s+/ /o;
+    # Ignore comments and blank lines
+    next if /^#/o;
+    next if /^$/o;
+    # Split the line into a series of selectors and a destination
+    ($selectors,$dest) = split(' ', $_, 2);
+    @selectors = split(/[;,]/, $selectors);
+    $dest =~ s/^-//o;
+    # Ignore the line if the destination is '*' or /dev/anything
+    next if $dest eq '*';
+    next if $dest =~ m|^/dev/|o;
+    cmd("mv $dest $dest.0");
+    cmd("mkdir $dest");
+    make_run("$svcdir/log/part$count", 'exec spipe filter logger');
+    make_run("$svcdir/log/part$count/filter",
+	     "exec syslogxlate '" . join(' ', @selectors) . "'");
+    make_run("$svcdir/log/part$count/logger", "exec multilog t $dest");
+    $count++;
+}

@@ -1,0 +1,80 @@
+.TH syslogxlate 1
+.SH NAME
+syslogxlate \- Select and translate syslog messages
+.SH SYNOPSIS
+.B syslogxlate
+[
+.B \-f
+] [
+.B \-p
+] [
+.B \-X
+]
+.I selector ...
+.SH DESCRIPTION
+.B syslogxlate
+reads syslog formatted messages on standard input, drops all but the
+ones selected by the criteria named on the command line, optionally
+translates the facility and priority number into names, and writes the
+messages to standard output.
+If the message does not appear to be a syslog formatted message, it is
+written to standard output with no modifications.
+.RS
+.SS SELECTOR SYNTAX
+A
+.I selector
+follows the format
+.IR FACILITY.PRIORITY .
+Any number of selectors may be listed on the command line.
+Each one is processed in the order they appear; latter selectors
+override prior ones.
+.P
+.I FACILITY
+is one of kern, user, mail, daemon, auth, syslog, lpr, news, uucp, cron,
+authpriv, ftp, or local0 to local7.
+The facility name
+.I *
+matches all facilities.
+.P
+.I PRIORITY
+is one of emerg, alert, crit, err, warning, notice, info, or debug
+(listed in decreasing order of severity).
+Prefixing a priority name with
+.I =
+means to match only that priority level; with the prefix, all priority
+levels of the given severity or higher are matched.
+The priority name
+.I *
+matches all priorities (equivalent to debug).
+Prefixing the priority name with
+.I !
+deselects matching message types.
+.SS SELECTOR EXAMPLES
+Select only debug messages from all sources:
+
+.EX
+*.=debug
+.EE
+
+Select all mail messages except those with the info priority:
+
+.EX
+mail.* mail.!=info
+.EE
+
+.RE
+.SH OPTIONS
+Some people make this separate from the description.
+Make indented sections with .TP, and precede options with .B
+.SH SEE ALSO
+syslogread
+.SH CAVEATS
+Most command shells interpret
+.I *
+and
+.I !
+before executing programs, so take special care to quote these
+symbols.
+.SH RESTRICTIONS
+.B syslogxlate
+always strips off the timestamp from the incoming messages.
