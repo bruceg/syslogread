@@ -7,11 +7,11 @@
 static int selected[facility_count][priority_count] = {{0,}};
 
 const char* usage_str =
-"Usage: syslogxlate [-FPx] PRIORITY.FACILITY [PRIORITY.FACILITY...]
+"Usage: syslogxlate [-fpx] PRIORITY.FACILITY [PRIORITY.FACILITY...]
   Selects and translates syslog formatted messages.
 
-  -F  Show the facility name or number
-  -P  Show the priority name or number
+  -f  Do not show the facility name or number
+  -p  Do not show the priority name or number
   -x  Do not translate priority or facility numbers into names
 
   PRIORITY is one of emerg, alert, crit, err, warning, notice, info, or debug.
@@ -20,8 +20,8 @@ const char* usage_str =
   See the documentation for a detailed explanation of PRIORITY and FACILITY.
 ";
 
-static int opt_show_facility = 0;
-static int opt_show_priority = 0;
+static int opt_show_facility = 1;
+static int opt_show_priority = 1;
 static int opt_xlate_names = 1;
 
 void usage(const char* msg)
@@ -108,10 +108,10 @@ void parse_selector(char* str)
 void parse_args(int argc, char* argv[])
 {
   int ch;
-  while((ch = getopt(argc, argv, "FPtx")) != EOF) {
+  while((ch = getopt(argc, argv, "fptx")) != EOF) {
     switch(ch) {
-    case 'F': opt_show_facility = 1;   break;
-    case 'P': opt_show_priority = 1;   break;
+    case 'f': opt_show_facility = 0;   break;
+    case 'p': opt_show_priority = 0;   break;
     case 'x': opt_xlate_names = 0;     break;
     default:
       usage(0);

@@ -8,7 +8,7 @@ syslogxlate \- Select and translate syslog messages
 ] [
 .B \-p
 ] [
-.B \-X
+.B \-x
 ]
 .I selector ...
 .SH DESCRIPTION
@@ -64,10 +64,18 @@ mail.* mail.!=info
 
 .RE
 .SH OPTIONS
-Some people make this separate from the description.
-Make indented sections with .TP, and precede options with .B
+.TP
+.B \-f
+Do not show the facility name or number
+.TP
+.B \-p
+Do not show the priority name or number
+.TP
+.B \-x
+Do not translate priority or facility numbers into names
 .SH SEE ALSO
-syslogread
+sysloglread(1),
+sysloguread(1)
 .SH CAVEATS
 Most command shells interpret
 .I *
