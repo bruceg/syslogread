@@ -18,12 +18,25 @@ or producing syslog messages.
 %setup
 
 %build
-make CFLAGS="$RPM_OPT_FLAGS" LDFLAGS="-s"
+echo gcc $RPM_OPT_FLAGS >conf-cc
+echo gcc -s >conf-ld
+make
 
 %install
 rm -fr $RPM_BUILD_ROOT
-make DESTDIR=$RPM_BUILD_ROOT bindir=%{_bindir} mandir=%{_mandir} \
-	install install-services
+mkdir -p $RPM_BUILD_ROOT%{_bindir}
+mkdir -p $RPM_BUILD_ROOT%{_mandir}
+mkdir -p $RPM_BUILD_ROOT/service
+mkdir -p $RPM_BUILD_ROOT/var/service/sysloglread/log
+
+echo $RPM_BUILD_ROOT%{_bindir} >conf-bin
+echo $RPM_BUILD_ROOT%{_mandir} >conf-man
+rm insthier.o installer instcheck
+make installer instcheck
+./installer
+./instcheck
+install -m 755 sysloglread.run $RPM_BUILD_ROOT/var/service/sysloglread/run
+install -m 755 sysloglread-log.run $RPM_BUILD_ROOT/var/service/sysloglread/log/run
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -67,7 +80,7 @@ esac
 %{_mandir}/man1/*
 
 %dir %attr(-,syslogrd,syslogrd) /var/log/syslog
-%dir /var/service/sysloglread
-%dir /var/service/sysloglread/log
+%dir %attr(1755,root,root) /var/service/sysloglread
+%dir %attr(0755,root,root) /var/service/sysloglread/log
 %config(noreplace) /var/service/sysloglread/run
 %config(noreplace) /var/service/sysloglread/log/run
