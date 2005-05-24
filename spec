@@ -33,10 +33,7 @@ mkdir -p $RPM_BUILD_ROOT/var/service/sysloglread/log
 
 echo $RPM_BUILD_ROOT%{_bindir} >conf-bin
 echo $RPM_BUILD_ROOT%{_mandir} >conf-man
-rm insthier.o installer instcheck
-make installer instcheck
-./installer
-./instcheck
+make install
 install -m 755 sysloglread.run $RPM_BUILD_ROOT/var/service/sysloglread/run
 install -m 755 sysloglread-log.run $RPM_BUILD_ROOT/var/service/sysloglread/log/run
 mkdir -p $RPM_BUILD_ROOT/var/log/syslog
