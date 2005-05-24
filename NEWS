@@ -1,7 +1,10 @@
 -------------------------------------------------------------------------------
 Changes in version 0.92:
 
-- Fixed some compilation problems on *BSD systems.
+- Several compilation fixes.
+
+Development of this version has been sponsored by FutureQuest, Inc.
+ossi@FutureQuest.net  http://www.FutureQuest.net/
 -------------------------------------------------------------------------------
 Changes in version 0.91:
 

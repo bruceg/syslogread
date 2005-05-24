@@ -92,7 +92,7 @@ void make_sockets(void)
     if((sockets[i] = socket(AF_INET, SOCK_DGRAM, 0)) == -1)
       die("Could not create socket");
     make_sockaddr_in(socket_names[i*2], socket_names[i*2+1], &sa);
-    if(bind(sockets[i], &sa, sizeof sa))
+    if(bind(sockets[i], (struct sockaddr*)&sa, sizeof sa))
       die("Could not bind socket to address");
   }
   setuidgid(opt_uid, opt_gid);

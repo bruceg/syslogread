@@ -100,7 +100,7 @@ void make_sockets(void)
     sa.sun_family = AF_UNIX;
     strcpy(sa.sun_path, socket_names[i]);
     unlink(socket_names[i]);
-    if(bind(sockets[i], &sa, sizeof sa))
+    if(bind(sockets[i], (struct sockaddr*)&sa, sizeof sa))
       die("Could not bind socket to path");
   }
   setuidgid(opt_uid, opt_gid);

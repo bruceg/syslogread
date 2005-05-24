@@ -90,7 +90,7 @@ void parse_args(int argc, char* argv[])
   host = argv[optind++];
   port = argv[optind++];
   make_sockaddr_in(host, port, &sa);
-  if(connect(sockfd, &sa, sizeof sa))
+  if(connect(sockfd, (struct sockaddr*)&sa, sizeof sa))
     die("Could not connect to server");
   facility = facility_number(argv[optind++]);
   if(facility < 0)
