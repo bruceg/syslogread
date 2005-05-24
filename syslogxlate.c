@@ -24,18 +24,17 @@
 static int selected[facility_count][priority_count] = {{0,}};
 
 const char* usage_str =
-"Usage: syslogxlate [-fpx] PRIORITY.FACILITY [PRIORITY.FACILITY...]
-  Selects and translates syslog formatted messages.
-
-  -f  Do not show the facility name or number
-  -p  Do not show the priority name or number
-  -x  Do not translate priority or facility numbers into names
-
-  PRIORITY is one of emerg, alert, crit, err, warning, notice, info, or debug.
-  FACILITY is one of kern, user, mail, daemon, auth, syslog, lpr, news, uucp,
-                     cron, authpriv, ftp, or local0-local7.
-  See the documentation for a detailed explanation of PRIORITY and FACILITY.
-";
+"Usage: syslogxlate [-fpx] PRIORITY.FACILITY [PRIORITY.FACILITY...]\n"
+"  Selects and translates syslog formatted messages.\n"
+"\n"
+"  -f  Do not show the facility name or number\n"
+"  -p  Do not show the priority name or number\n"
+"  -x  Do not translate priority or facility numbers into names\n"
+"\n"
+"  PRIORITY is one of emerg, alert, crit, err, warning, notice, info, or debug.\n"
+"  FACILITY is one of kern, user, mail, daemon, auth, syslog, lpr, news, uucp,\n"
+"                     cron, authpriv, ftp, or local0-local7.\n"
+"  See the documentation for a detailed explanation of PRIORITY and FACILITY.\n";
 
 static int opt_show_facility = 1;
 static int opt_show_priority = 1;
