@@ -22,7 +22,7 @@ or producing syslog messages.
 %build
 echo gcc $RPM_OPT_FLAGS >conf-cc
 echo gcc -s >conf-ld
-make
+make programs
 
 %install
 rm -fr $RPM_BUILD_ROOT
