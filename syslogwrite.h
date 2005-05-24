@@ -2,6 +2,6 @@
 #define SYSLOGREAD__SYSLOG_WRITE__H__
 
 void main_loop(int fd, const char* prefix,
-	       unsigned facility, int strip_priority);
+	       unsigned facility, int strip_priority, int preserve_syslog);
 
 #endif

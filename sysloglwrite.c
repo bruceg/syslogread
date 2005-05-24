@@ -62,14 +62,16 @@ static gid_t opt_gid = 0;
 static uid_t opt_uid = 0;
 static int opt_reopen = 0;
 static int opt_strip_priority = 0;
+static int opt_preserve_syslog = 0;
 
 void parse_args(int argc, char* argv[])
 {
   int ch;
-  while((ch = getopt(argc, argv, "g:pru:U")) != EOF) {
+  while((ch = getopt(argc, argv, "g:pPru:U")) != EOF) {
     switch(ch) {
     case 'g': opt_gid = parse_gid(optarg); break;
     case 'p': opt_strip_priority = 1;      break;
+    case 'P': opt_preserve_syslog = 1;     break;
     case 'r': opt_reopen = 1;              break;
     case 'u': opt_uid = parse_uid(optarg); break;
     case 'U':
@@ -121,7 +123,7 @@ int main(int argc, char* argv[])
 {
   parse_args(argc, argv);
   main_loop(opt_reopen ? 0 : make_socket(socket_name),
-	    prefix, facility, opt_strip_priority);
+	    prefix, facility, opt_strip_priority, opt_preserve_syslog);
   return 0;
 }
 

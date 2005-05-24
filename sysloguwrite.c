@@ -61,6 +61,7 @@ static const char* prefix = "";
 static gid_t opt_gid = 0;
 static uid_t opt_uid = 0;
 static int opt_strip_priority = 0;
+static int opt_preserve_syslog = 0;
 
 void parse_args(int argc, char* argv[])
 {
@@ -68,10 +69,11 @@ void parse_args(int argc, char* argv[])
   const char* host;
   const char* port;
   int ch;
-  while((ch = getopt(argc, argv, "g:u:Up")) != EOF) {
+  while((ch = getopt(argc, argv, "g:u:UpP")) != EOF) {
     switch(ch) {
     case 'g': opt_gid = parse_gid(optarg); break;
     case 'p': opt_strip_priority = 1;      break;
+    case 'P': opt_preserve_syslog = 1;     break;
     case 'u': opt_uid = parse_uid(optarg); break;
     case 'U':
       opt_gid = parse_gid(getenv("GID"));
@@ -108,7 +110,7 @@ void write_message(int fd, const char* message, size_t msg_len)
 int main(int argc, char* argv[])
 {
   parse_args(argc, argv);
-  main_loop(sockfd, prefix, facility, opt_strip_priority);
+  main_loop(sockfd, prefix, facility, opt_strip_priority, opt_preserve_syslog);
   return 0;
 }
 

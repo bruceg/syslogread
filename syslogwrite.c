@@ -24,14 +24,32 @@
 extern void write_message(int fd, const char* message, size_t msg_len);
 
 void main_loop(int fd, const char* prefix,
-	       unsigned facility, int strip_priority)
+	       unsigned facility, int strip_priority, int preserve_syslog)
 {
   char inbuf[2048];
   char outbuf[2048];
   while(fgets(inbuf, sizeof inbuf, stdin)) {
     unsigned priority = LOG_INFO;
     const char* msgptr = inbuf;
-    if(!strncasecmp(inbuf, "emergency:", 10)) {
+    int in_preform = 0;
+    unsigned int in_val = 0;
+    if(*msgptr == '<' && preserve_syslog) {
+      const char* endptr = msgptr + 1;
+      if(isdigit(*endptr)) {
+        do {
+          in_val *= 10;
+          in_val += *endptr - '0';
+          ++endptr;
+	} while(isdigit(*endptr));
+	if(*endptr == '>') {
+	  msgptr = endptr + 1;
+	  in_preform = 1;
+	}
+      }
+    }
+    if(in_preform)
+      ;
+    else if(!strncasecmp(inbuf, "emergency:", 10)) {
       priority = LOG_ALERT;
       msgptr = inbuf + 10;
     }
@@ -65,8 +83,11 @@ void main_loop(int fd, const char* prefix,
     }
     while(isspace(*msgptr))
       ++msgptr;
-    sprintf(outbuf, "<%u>%s%s", priority + (facility << 3),
-	    prefix, strip_priority ? msgptr : inbuf);
+    if(in_preform)
+      sprintf(outbuf, "<%u>%s", in_val, msgptr);
+    else
+      sprintf(outbuf, "<%u>%s%s", priority + (facility << 3),
+	      prefix, strip_priority ? msgptr : inbuf);
     write_message(fd, outbuf, strlen(outbuf));
   }
 }

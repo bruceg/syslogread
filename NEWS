@@ -1,6 +1,8 @@
 -------------------------------------------------------------------------------
 Changes in version 0.92:
 
+- Added "preserve" mode.  Thanks Chris Jantzen.
+
 - Several compilation fixes.
 
 Development of this version has been sponsored by FutureQuest, Inc.

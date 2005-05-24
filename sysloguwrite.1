@@ -10,6 +10,8 @@ sysloguwrite \- Write syslog messages to a UDP socket
 ] [
 .B \-U
 ] [
+.B \-P
+] [
 .B \-p
 ] [
 .B \-X
@@ -52,6 +54,9 @@ UID must be a positive integer.
 .TP
 .B \-p
 Strip off the priority prefix from the above table.
+.TP
+.B \-P
+Preserve pre-formatted lines from another syslog source.
 .TP
 .B \-U
 Same as -g $GID -u $UID.
